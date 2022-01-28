@@ -3,7 +3,7 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Dict, List
-
+import logging
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -18,6 +18,8 @@ from tell.modules.criteria import Criterion
 from .decoder_flattened import Decoder
 from .decoder_flattened_lstm import LSTMDecoder
 from .resnet import resnet152
+
+logger = logging.getLogger(__name__)
 
 
 @Model.register("transformer_flattened")
@@ -39,11 +41,13 @@ class TransformerFlattenedModel(Model):
                  sampling_topk: int = 1,
                  sampling_temp: float = 1.0,
                  weigh_bert: bool = False,
+                 model_path: str = None,
                  initializer: InitializerApplicator = InitializerApplicator()) -> None:
         super().__init__(vocab)
         self.decoder = decoder
         self.criterion = criterion
 
+        self.vocab = vocab
         self.index = index
         self.namespace = namespace
         self.resnet = resnet152()
@@ -63,8 +67,13 @@ class TransformerFlattenedModel(Model):
         self.n_samples = 0
         self.sample_history: Dict[str, float] = defaultdict(float)
 
-        initializer(self)
-
+        # initializer(self)
+        if model_path is not None:
+            logger.info(f'Recovering weights from {model_path}.')
+            model_state = torch.load(model_path)
+            self.load_state_dict(model_state)
+        else:
+            initializer(self)
         # Initialize the weight with first layer of BERT
         # self.fc.weight.data.copy_(
         #     self.roberta.model.decoder.sentence_encoder.embed_tokens.weight)

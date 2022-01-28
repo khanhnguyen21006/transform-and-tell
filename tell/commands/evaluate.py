@@ -39,7 +39,7 @@ def evaluate_from_file(archive_path, model_path, overrides=None, eval_suffix='',
         config = yaml_to_params(archive_path, overrides)
         prepare_environment(config)
         config_dir = os.path.dirname(archive_path)
-        serialization_dir = os.path.join(config_dir, 'serialization')
+        serialization_dir = os.path.join(config_dir, 'serialization_csd')
 
     all_datasets = datasets_from_params(config)
 

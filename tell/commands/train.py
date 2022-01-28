@@ -54,7 +54,7 @@ def train_model_from_file(parameter_filename: str,
 
     if not serialization_dir:
         config_dir = os.path.dirname(parameter_filename)
-        serialization_dir = os.path.join(config_dir, 'serialization')
+        serialization_dir = os.path.join(config_dir, 'serialization_csd')
 
     return train_model(params,
                        serialization_dir,

@@ -7,3 +7,5 @@ from .nytimes_copy_matched import NYTimesCopyMatchedReader
 from .nytimes_faces_ner_matched import NYTimesFacesNERMatchedReader
 from .nytimes_glove import NYTimesGloveReader
 from .nytimes_position import NYTimesPositionReader
+from .wit import WitReader
+from .wit_desc_sec import WitDescSecReader
