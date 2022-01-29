@@ -9,3 +9,4 @@ from .transformer_flattened import TransformerFlattenedModel
 from .transformer_glove import TransformerGloveModel
 from .transformer_pointer import TransformerPointerModel
 from .transformer_pointer_2 import TransformerPointer2Model
+from .transformer_flattened_aoa import TransformerFlattenedAoAModel
