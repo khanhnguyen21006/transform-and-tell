@@ -74,11 +74,11 @@ class TransformerFlattenedAoAModel(Model):
         nn.init.xavier_uniform_(self.article_proj_weight)
         nn.init.constant_(self.article_proj_bias, 0.)
 
-        self.mh_aoa_image1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
-        self.mh_aoa_image2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_image1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_image2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
 
-        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
-        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
         # initializer(self)
         if model_path is not None:
             logger.info(f'Recovering weights from {model_path}.')
@@ -565,7 +565,7 @@ def attention(query, key, value, mask=None, dropout=None):
     scores = torch.matmul(query, key.transpose(-2, -1)) \
              / math.sqrt(d_k)
     if mask is not None:
-        scores = scores.masked_fill(mask == 0, -1e9)
+        scores = scores.masked_fill(mask == 0, float('-inf'))
     p_attn = F.softmax(scores, dim=-1)
     if dropout is not None:
         p_attn = dropout(p_attn)
