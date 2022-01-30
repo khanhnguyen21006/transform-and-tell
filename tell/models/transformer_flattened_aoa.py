@@ -245,10 +245,10 @@ class TransformerFlattenedAoAModel(Model):
         image_padding_mask = X_image.new_zeros(B, P).bool()
 
         X_article = F.linear(X_article, self.article_proj_weight, self.article_proj_bias)
-        X_article1 = self.mh_aoa_context1(X_article, X_image, X_image, mask=~article_padding_mask)
-        X_image1 = self.mh_aoa_image1(X_image, X_article, X_article, mask=~image_padding_mask)
-        X_article2 = self.mh_aoa_context2(X_article1, X_image1, X_image1, mask=~article_padding_mask)
-        X_image2 = self.mh_aoa_image2(X_image1, X_article1, X_article1, mask=~image_padding_mask)
+        X_article1 = self.mh_aoa_context1(X_article, X_image, X_image, mask=~image_padding_mask)
+        X_image1 = self.mh_aoa_image1(X_image, X_article, X_article, mask=~article_padding_mask)
+        X_article2 = self.mh_aoa_context2(X_article1, X_image1, X_image1, mask=~image_padding_mask)
+        X_image2 = self.mh_aoa_image2(X_image1, X_article1, X_article1, mask=~article_padding_mask)
         # The quirks of dynamic convolution implementation: The context
         # embedding has dimension [seq_len, batch_size], but the mask has
         # dimension [batch_size, seq_len].
