@@ -484,7 +484,7 @@ class MultiHeadedDotAttention(nn.Module):
 
         # normalize the query?
         if norm_q:
-            self.norm = LayerNorm(d_model)
+            self.norm = LayerNorm(d_query)
         else:
             self.norm = lambda x: x
         self.linears = clones(nn.Linear(d_query, d_model * scale), 1 + 2 * project_k_v)
@@ -495,7 +495,8 @@ class MultiHeadedDotAttention(nn.Module):
         # apply aoa after attention?
         self.use_aoa = do_aoa
         if self.use_aoa:
-            self.aoa_layer = nn.Sequential(nn.Linear((1 + scale) * d_model, 2 * d_model), nn.GLU())
+            # self.aoa_layer = nn.Sequential(nn.Linear((1 + scale) * d_model, 2 * d_model), nn.GLU())
+            self.aoa_layer = nn.Sequential(nn.Linear(d_query + d_model, 2 * d_model), nn.GLU())
             # dropout to the input of AoA layer
             if dropout_aoa > 0:
                 self.dropout_aoa = nn.Dropout(p=dropout_aoa)
