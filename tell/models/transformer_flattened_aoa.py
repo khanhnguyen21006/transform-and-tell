@@ -69,16 +69,16 @@ class TransformerFlattenedAoAModel(Model):
         self.n_samples = 0
         self.sample_history: Dict[str, float] = defaultdict(float)
 
-        self.image_proj_weight = nn.Parameter(torch.Tensor(1024, 2048))
-        self.image_proj_bias = nn.Parameter(torch.Tensor(1024))
-        nn.init.xavier_uniform_(self.image_proj_weight)
-        nn.init.constant_(self.image_proj_bias, 0.)
+        # self.image_proj_weight = nn.Parameter(torch.Tensor(1024, 2048))
+        # self.image_proj_bias = nn.Parameter(torch.Tensor(1024))
+        # nn.init.xavier_uniform_(self.image_proj_weight)
+        # nn.init.constant_(self.image_proj_bias, 0.)
 
-        self.mh_aoa_image1 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
-        self.mh_aoa_image2 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_image1 = MultiHeadedDotAttention(8, 2048, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_image2 = MultiHeadedDotAttention(8, 1024, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
 
-        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
-        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 1024, 2048, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 2048, 1024, dropout=0.1, scale=1, project_k_v=0, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
         # initializer(self)
         if model_path is not None:
             logger.info(f'Recovering weights from {model_path}.')
@@ -244,11 +244,12 @@ class TransformerFlattenedAoAModel(Model):
         # Create padding mask (1 corresponds to the padding index)
         image_padding_mask = X_image.new_zeros(B, P).bool()
 
-        X_image = F.linear(X_image, self.image_proj_weight, self.image_proj_bias)
+        # X_image = F.linear(X_image, self.image_proj_weight, self.image_proj_bias)
         X_article1 = self.mh_aoa_context1(X_article, X_image, X_image, mask=~image_padding_mask)
         X_image1 = self.mh_aoa_image1(X_image, X_article, X_article, mask=~article_padding_mask)
         X_article2 = self.mh_aoa_context2(X_article1, X_image1, X_image1, mask=~image_padding_mask)
         X_image2 = self.mh_aoa_image2(X_image1, X_article1, X_article1, mask=~article_padding_mask)
+
         # The quirks of dynamic convolution implementation: The context
         # embedding has dimension [seq_len, batch_size], but the mask has
         # dimension [batch_size, seq_len].
@@ -470,7 +471,7 @@ class TransformerFlattenedAoAModel(Model):
 
 
 class MultiHeadedDotAttention(nn.Module):
-    def __init__(self, h, d_model, dropout=0.1, scale=1, project_k_v=1, use_output_layer=1, do_aoa=0, norm_q=0,
+    def __init__(self, h, d_query, d_model, dropout=0.1, scale=1, project_k_v=1, use_output_layer=1, do_aoa=0, norm_q=0,
                  dropout_aoa=0.3):
         super(MultiHeadedDotAttention, self).__init__()
         assert d_model * scale % h == 0
@@ -486,7 +487,7 @@ class MultiHeadedDotAttention(nn.Module):
             self.norm = LayerNorm(d_model)
         else:
             self.norm = lambda x: x
-        self.linears = clones(nn.Linear(d_model, d_model * scale), 1 + 2 * project_k_v)
+        self.linears = clones(nn.Linear(d_query, d_model * scale), 1 + 2 * project_k_v)
 
         # output linear layer after the multi-head attention?
         self.output_layer = nn.Linear(d_model * scale, d_model)
