@@ -69,11 +69,16 @@ class TransformerFlattenedAoAModel(Model):
         self.n_samples = 0
         self.sample_history: Dict[str, float] = defaultdict(float)
 
+        self.article_proj_weight = nn.Parameter(torch.Tensor(2048, 1024))
+        self.article_proj_bias = nn.Parameter(torch.Tensor(2048))
+        nn.init.xavier_uniform_(self.article_proj_weight)
+        nn.init.constant_(self.article_proj_bias, 0.)
+
         self.mh_aoa_image1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
         self.mh_aoa_image2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
 
-        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
-        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 1024, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context1 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
+        self.mh_aoa_context2 = MultiHeadedDotAttention(8, 2048, dropout=0.1, scale=1, project_k_v=1, use_output_layer=0, do_aoa=1, norm_q=1, dropout_aoa=0)
         # initializer(self)
         if model_path is not None:
             logger.info(f'Recovering weights from {model_path}.')
@@ -239,6 +244,7 @@ class TransformerFlattenedAoAModel(Model):
         # Create padding mask (1 corresponds to the padding index)
         image_padding_mask = X_image.new_zeros(B, P).bool()
 
+        X_article = F.linear(X_article, self.article_proj_weight, self.article_proj_bias)
         X_article1 = self.mh_aoa_context1(X_article, X_image, X_image, mask=~article_padding_mask)
         X_image1 = self.mh_aoa_image1(X_image, X_article, X_article, mask=~image_padding_mask)
         X_article2 = self.mh_aoa_context2(X_article1, X_image1, X_image1, mask=~article_padding_mask)
