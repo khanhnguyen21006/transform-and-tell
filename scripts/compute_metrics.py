@@ -82,13 +82,13 @@ def main():
     eval_line = 'EVAL'
     meteor_scorer.lock.acquire()
     count = 0
-    recalls, precisions = [], []
-    rare_recall, rare_recall_total = 0, 0
-    rare_precision, rare_precision_total = 0, 0
+    # recalls, precisions = [], []
+    # rare_recall, rare_recall_total = 0, 0
+    # rare_precision, rare_precision_total = 0, 0
     full_recall, full_recall_total = 0, 0
     full_precision, full_precision_total = 0, 0
-    full_rare_recall, full_rare_recall_total = 0, 0
-    full_rare_precision, full_rare_precision_total = 0, 0
+    # full_rare_recall, full_rare_recall_total = 0, 0
+    # full_rare_precision, full_rare_precision_total = 0, 0
     lengths, gt_lengths = [], []
     n_uniques, gt_n_uniques = [], []
 
@@ -108,10 +108,10 @@ def main():
 
             generation = obj['generation']
 
-            if obj['caption_names']:
-                recalls.append(compute_recall(obj))
-            if obj['generated_names']:
-                precisions.append(compute_precision(obj))
+            # if obj['caption_names']:
+            #     recalls.append(compute_recall(obj))
+            # if obj['generated_names']:
+            #     precisions.append(compute_precision(obj))
 
             c, t = compute_full_recall(obj)
             full_recall += c
