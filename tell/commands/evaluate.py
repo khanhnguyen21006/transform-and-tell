@@ -98,6 +98,8 @@ def evaluate(model: Model,
         cache_path = 'data/goodnews/evaluation_cache.pkl'
     elif 'nytimes' in serialization_dir:
         cache_path = 'data/nytimes/evaluation_cache.pkl'
+    elif 'wit' in serialization_dir:
+        cache_path = 'data/wit/evaluation_cache.pkl'
     if os.path.exists(cache_path):
         with open(cache_path, 'rb') as f:
             cache = pickle.load(f)
