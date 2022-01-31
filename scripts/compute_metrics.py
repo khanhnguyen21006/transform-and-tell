@@ -121,21 +121,21 @@ def main():
             full_precision += c
             full_precision_total += t
 
-            c, t = compute_rare_recall(obj, counters['caption'])
-            rare_recall += c
-            rare_recall_total += t
-
-            c, t = compute_rare_precision(obj, counters['caption'])
-            rare_precision += c
-            rare_precision_total += t
-
-            c, t = compute_rare_recall(obj, full_counter)
-            full_rare_recall += c
-            full_rare_recall_total += t
-
-            c, t = compute_rare_precision(obj, full_counter)
-            full_rare_precision += c
-            full_rare_precision_total += t
+            # c, t = compute_rare_recall(obj, counters['caption'])
+            # rare_recall += c
+            # rare_recall_total += t
+            #
+            # c, t = compute_rare_precision(obj, counters['caption'])
+            # rare_precision += c
+            # rare_precision_total += t
+            #
+            # c, t = compute_rare_recall(obj, full_counter)
+            # full_rare_recall += c
+            # full_rare_recall_total += t
+            #
+            # c, t = compute_rare_precision(obj, full_counter)
+            # full_rare_precision += c
+            # full_rare_precision_total += t
 
             # Remove punctuation
             caption = re.sub(r'[^\w\s]', '', caption)
@@ -194,26 +194,26 @@ def main():
             'total': full_precision_total,
             'percentage': (full_precision / full_precision_total) if full_precision_total else None,
         },
-        'Caption rare names - recall': {
-            'count': rare_recall,
-            'total': rare_recall_total,
-            'percentage': (rare_recall / rare_recall_total) if rare_recall_total else None,
-        },
-        'Caption rare names - precision': {
-            'count': rare_precision,
-            'total': rare_precision_total,
-            'percentage': (rare_precision / rare_precision_total) if rare_precision_total else None,
-        },
-        'Article rare names - recall': {
-            'count': full_rare_recall,
-            'total': full_rare_recall_total,
-            'percentage': (full_rare_recall / full_rare_recall_total) if full_rare_recall_total else None,
-        },
-        'Article rare names - precision': {
-            'count': full_rare_precision,
-            'total': full_rare_precision_total,
-            'percentage': (full_rare_precision / full_rare_precision_total) if full_rare_precision_total else None,
-        },
+        # 'Caption rare names - recall': {
+        #     'count': rare_recall,
+        #     'total': rare_recall_total,
+        #     'percentage': (rare_recall / rare_recall_total) if rare_recall_total else None,
+        # },
+        # 'Caption rare names - precision': {
+        #     'count': rare_precision,
+        #     'total': rare_precision_total,
+        #     'percentage': (rare_precision / rare_precision_total) if rare_precision_total else None,
+        # },
+        # 'Article rare names - recall': {
+        #     'count': full_rare_recall,
+        #     'total': full_rare_recall_total,
+        #     'percentage': (full_rare_recall / full_rare_recall_total) if full_rare_recall_total else None,
+        # },
+        # 'Article rare names - precision': {
+        #     'count': full_rare_precision,
+        #     'total': full_rare_precision_total,
+        #     'percentage': (full_rare_precision / full_rare_precision_total) if full_rare_precision_total else None,
+        # },
         'Length - generation': sum(lengths) / len(lengths),
         'Length - reference': sum(gt_lengths) / len(gt_lengths),
         'Unique words - generation': sum(n_uniques) / len(n_uniques),
