@@ -67,10 +67,10 @@ def main():
         ptvsd.enable_attach(address)
         ptvsd.wait_for_attach()
 
-    with open(args['counters'], 'rb') as f:
-        counters = pickle.load(f)
-
-    full_counter = counters['context'] + counters['caption']
+    # with open(args['counters'], 'rb') as f:
+    #     counters = pickle.load(f)
+    #
+    # full_counter = counters['context'] + counters['caption']
 
     bleu_scorer = BleuScorer(n=4)
     rouge_scorer = Rouge()
