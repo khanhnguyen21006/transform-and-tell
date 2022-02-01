@@ -126,6 +126,7 @@ def evaluate(model: Model,
         total_weight = 0.0
 
         for batch in generator_tqdm:
+            logger.info(f"batch items: {batch['caption']['roberta'].shape[0]}")
             batch_count += 1
             batch = nn_util.move_to_device(batch, cuda_device)
             output_dict = model(**batch)
@@ -183,7 +184,7 @@ def write_to_json(output_dict, serialization_dir, nlp, eval_suffix, cache):
         copied_texts = output_dict['copied_texts']
     else:
         copied_texts = ['' for _ in range(len(captions))]
-
+    logger.info(f"adding {len(captions)} captions to output file...")
     out_path = os.path.join(
         serialization_dir, f'generations{eval_suffix}.jsonl')
     with open(out_path, 'a') as f:
@@ -198,8 +199,8 @@ def write_to_json(output_dict, serialization_dir, nlp, eval_suffix, cache):
                 'raw_caption': m['caption'],
                 'generation': generation,
                 'copied_texts': copied_texts[i],
-                'web_url': m['web_url'],
-                'image_path': m['image_path'],
+                # 'web_url': m['web_url'],
+                # 'image_path': m['image_path'],
                 'context': m['context'],
                 'caption_names': get_proper_nouns(caption_doc),
                 'generated_names': get_proper_nouns(gen_doc),
