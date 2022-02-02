@@ -125,12 +125,22 @@ def evaluate(model: Model,
         # Cumulative weight across all batches.
         total_weight = 0.0
 
+        non_output_dict = 0
+        total_caption = 0
+
         for batch in generator_tqdm:
             logger.info(f"batch items: {batch['caption']['roberta'].shape[0]}")
             batch_count += 1
             batch = nn_util.move_to_device(batch, cuda_device)
             output_dict = model(**batch)
             loss = output_dict.get("loss")
+
+            if 'captions' not in output_dict:
+                non_output_dict += 1
+
+            logger.info(f"adding {len(output_dict['captions'])} captions to output file...")
+            total_caption += len(output_dict['captions'])
+            logger.info(f"total {total_caption} captions added so far.")
 
             write_to_json(output_dict, serialization_dir,
                           nlp, eval_suffix, cache)
@@ -166,6 +176,9 @@ def evaluate(model: Model,
             #                        "produced a loss!")
             final_metrics["loss"] = total_loss / total_weight
 
+        logger.info(f"total {total_caption} captions generated.")
+        logger.info(f"total non_output_dict: {non_output_dict}.")
+
     if not os.path.exists(cache_path):
         with open(cache_path, 'wb') as f:
             pickle.dump(cache, f)
@@ -184,7 +197,7 @@ def write_to_json(output_dict, serialization_dir, nlp, eval_suffix, cache):
         copied_texts = output_dict['copied_texts']
     else:
         copied_texts = ['' for _ in range(len(captions))]
-    logger.info(f"adding {len(captions)} captions to output file...")
+
     out_path = os.path.join(
         serialization_dir, f'generations{eval_suffix}.jsonl')
     with open(out_path, 'a') as f:
