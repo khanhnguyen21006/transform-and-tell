@@ -10,3 +10,4 @@ from .transformer_glove import TransformerGloveModel
 from .transformer_pointer import TransformerPointerModel
 from .transformer_pointer_2 import TransformerPointer2Model
 from .transformer_flattened_aoa import TransformerFlattenedAoAModel
+from .transformer_flattened_ner_csd import TransformerNERCsdFlattenedModel

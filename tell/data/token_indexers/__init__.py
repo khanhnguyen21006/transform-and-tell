@@ -1,2 +1,3 @@
 from .roberta_indexer import RobertaTokenIndexer
 from .roberta_indexer_names_matched import RobertaNamesMatchedTokenIndexer
+from .roberta_indexer_ner_cad import RobertaNERCadTokenIndexer
