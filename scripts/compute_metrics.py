@@ -104,8 +104,7 @@ def main():
                 caption = obj['caption']
                 obj['caption_names'] = obj['processed_caption_names']
             else:
-                # caption = obj['raw_caption']
-                caption = obj['caption']
+                caption = obj['raw_caption']
 
             generation = obj['generation']
 
