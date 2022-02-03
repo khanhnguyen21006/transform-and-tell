@@ -9,3 +9,4 @@ from .nytimes_glove import NYTimesGloveReader
 from .nytimes_position import NYTimesPositionReader
 from .wit import WitReader
 from .wit_desc_sec import WitDescSecReader
+from .goodnews import GoodNewsReader
