@@ -65,17 +65,17 @@ class GoodNewsReader(DatasetReader):
         h = h5py.File(os.path.join(self.data_dir, 'TEST' + '_IMAGES.hdf5'), 'r')
         imgs = h['images']
 
-        with open(os.path.join(self.data_dir, 'TEST' + '_IMAGEIDS.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_IMAGEIDS.json'), 'r') as j:
             image_ids = json.load(j)
-        with open(os.path.join(self.data_dir, 'TEST' + '_ARTICLEURLS.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_ARTICLEURLS.json'), 'r') as j:
             article_urls = json.load(j)
-        with open(os.path.join(self.data_dir, 'TEST' + '_STRARTICLES.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_STRARTICLES.json'), 'r') as j:
             str_articles = json.load(j)
-        with open(os.path.join(self.data_dir, 'TEST' + '_STRCAPS.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_STRCAPS.json'), 'r') as j:
             str_captions = json.load(j)
-        with open(os.path.join(self.data_dir, 'TEST' + '_RAWSTRARTICLES.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_RAWSTRARTICLES.json'), 'r') as j:
             raw_str_articles = json.load(j)
-        with open(os.path.join(self.data_dir, 'TEST' + '_RAWSTRCAPS.json'), 'r') as j:
+        with open(os.path.join(self.data_dir, split + '_RAWSTRCAPS.json'), 'r') as j:
             raw_str_captions = json.load(j)
 
         logger.info('Grabbed...')
