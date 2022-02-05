@@ -62,7 +62,7 @@ class GoodNewsReader(DatasetReader):
         # data_name = 'wit_500_min_word_freq'
         logger.info('Grabbing all article IDs')
 
-        h = h5py.File(os.path.join(self.data_dir, 'TEST' + '_IMAGES.hdf5'), 'r')
+        h = h5py.File(os.path.join(self.data_dir, split + '_IMAGES.hdf5'), 'r')
         imgs = h['images']
 
         with open(os.path.join(self.data_dir, split + '_IMAGEIDS.json'), 'r') as j:
