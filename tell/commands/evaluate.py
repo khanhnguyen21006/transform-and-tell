@@ -214,6 +214,7 @@ def write_to_json(output_dict, serialization_dir, nlp, eval_suffix, cache):
                 'copied_texts': copied_texts[i],
                 # 'web_url': m['web_url'],
                 # 'image_path': m['image_path'],
+                'image_id': m['image_id'],
                 'context': m['context'],
                 'caption_names': get_proper_nouns(caption_doc),
                 'generated_names': get_proper_nouns(gen_doc),
