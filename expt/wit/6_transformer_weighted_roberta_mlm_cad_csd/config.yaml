@@ -20,9 +20,9 @@ vocabulary:
   type: roberta
   directory_path: ./expt/vocabulary
 model:
-  type: transformer_flattened
+  type: transformer_flattened_mlm
   decoder:
-    type: dynamic_conv_decoder_flattened_no_image
+    type: dynamic_conv_decoder_flattened
     embedder:
       type: sum
       token_embedders:
@@ -83,7 +83,7 @@ model:
   attention_dim: 1024
   namespace: bpe
   index: roberta
-  weigh_bert: false
+  weigh_bert: true
   padding_value: 1
   model_path: None
   # initializer:

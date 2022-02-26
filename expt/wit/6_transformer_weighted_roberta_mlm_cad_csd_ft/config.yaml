@@ -22,7 +22,7 @@ vocabulary:
 model:
   type: transformer_flattened
   decoder:
-    type: dynamic_conv_decoder_flattened_no_image
+    type: dynamic_conv_decoder_flattened
     embedder:
       type: sum
       token_embedders:
@@ -83,9 +83,9 @@ model:
   attention_dim: 1024
   namespace: bpe
   index: roberta
-  weigh_bert: false
+  weigh_bert: true
   padding_value: 1
-  model_path: None
+  model_path: ./expt/wit/6_transformer_weighted_roberta_mlm_cad_csd/serialization_csd/best.th
   # initializer:
   #   - - ^(attention|article_attention|init|f).*weight
   #     - type: xavier_uniform
@@ -124,8 +124,8 @@ trainer:
   keep_batchnorm_fp32: true
   optimizer:
     type: bert_adam
-    lr: 0.0001
-    warmup: 0.05
+    lr: 0.00005
+    warmup: 0.02
     t_total: 437600 # Takees 43m to go through 4376 batches per epoch
     schedule: warmup_linear
     b1: 0.9
@@ -157,7 +157,7 @@ trainer:
       checkpointer:
         num_serialized_models_to_keep: 5
     - type: track_metrics
-      patience: 30
+      patience: 100
     - type: validate
     - type: log_to_tensorboard
       summary_interval: 512

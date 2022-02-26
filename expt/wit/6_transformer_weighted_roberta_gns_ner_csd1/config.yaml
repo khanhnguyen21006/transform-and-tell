@@ -1,11 +1,11 @@
 dataset_reader:
-  type: good_news_ner_cad
+  type: good_news_ner
   tokenizer:
     type: word
     word_splitter: just_spaces_keep_newlines
   token_indexers:
     roberta:
-      type: roberta_gns_ner_cad
+      type: roberta_gns_ner
       model_name: roberta-base
       namespace: bpe
       padding_on_right: true
@@ -155,7 +155,7 @@ trainer:
   callbacks:
     - type: checkpoint
       checkpointer:
-        num_serialized_models_to_keep: 10
+        num_serialized_models_to_keep: 5
     - type: track_metrics
       patience: 30
     - type: validate
