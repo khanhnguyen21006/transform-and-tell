@@ -189,6 +189,7 @@ class TransformerFlattenedMLMModel(Model):
         bs = caption_ids.shape[0]
         mask_percent = 0.15
         rand = torch.rand(caption_ids.size()).to(caption_ids.device)
+
         # create mask array
         mask_arr = (rand <= mask_percent) * (caption_ids != 0) * (caption_ids != 2) * (caption_ids != 1)
         selection = []
