@@ -52,6 +52,7 @@ python -m ipykernel install --user --name tell --display-name "tell"
 
 # Our Pytorch uses CUDA 10.2. Ensure that CUDA_HOME points to the right
 # CUDA version. Chagne this depending on where you installed CUDA.
+# CUDA-10.2 installation example
 export CUDA_HOME=/usr/local/cuda-10.2
 
 # We also pin the apex version, which is used for mixed precision training
