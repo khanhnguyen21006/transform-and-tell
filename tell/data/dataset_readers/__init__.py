@@ -13,3 +13,4 @@ from .goodnews import GoodNewsReader
 from .wit_test_ret_out import WitRetOutReader
 from .goodnews_ner import GoodNewsNERReader
 from .goodnews_raw import GoodNewsRawReader
+from .goodnews_cleaned_ner import GoodNewsCleanedNERReader
