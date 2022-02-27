@@ -1,17 +1,17 @@
 dataset_reader:
-  type: good_news_cleaned_ner
+  type: good_news
   tokenizer:
     type: word
     word_splitter: just_spaces_keep_newlines
   token_indexers:
     roberta:
-      type: roberta_gns_ner
+      type: roberta
       model_name: roberta-base
       namespace: bpe
       padding_on_right: true
       padding_value: 1
       max_len: 512
-  data_dir: /data/vkhanh/backup/5_goodnews/data
+  data_dir: /home/ubuntu/data/5_goodnews/data
   lazy: true
 train_data_path: TRAIN
 validation_data_path: VAL
@@ -20,7 +20,7 @@ vocabulary:
   type: roberta
   directory_path: ./expt/vocabulary
 model:
-  type: transformer_flattened_ner_csd
+  type: transformer_flattened
   decoder:
     type: dynamic_conv_decoder_flattened
     embedder:
@@ -85,7 +85,7 @@ model:
   index: roberta
   weigh_bert: true
   padding_value: 1
-  model_path: /data/vkhanh/transform-and-tell-sec/expt/wit/6_transformer_weighted_roberta_ner_csd_ft/serialization_csd/best.th
+  model_path: ./expt/wit/6_transformer_weighted_roberta_wit_gns_ner_csd/serialization_csd/best.th
   # initializer:
   #   - - ^(attention|article_attention|init|f).*weight
   #     - type: xavier_uniform
@@ -124,8 +124,8 @@ trainer:
   keep_batchnorm_fp32: true
   optimizer:
     type: bert_adam
-    lr: 0.0001
-    warmup: 0.05
+    lr: 0.00005
+    warmup: 0.02
     t_total: 437600 # Takees 43m to go through 4376 batches per epoch
     schedule: warmup_linear
     b1: 0.9
@@ -157,7 +157,7 @@ trainer:
       checkpointer:
         num_serialized_models_to_keep: 5
     - type: track_metrics
-      patience: 30
+      patience: 100
     - type: validate
     - type: log_to_tensorboard
       summary_interval: 512

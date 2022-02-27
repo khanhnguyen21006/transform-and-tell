@@ -31,7 +31,7 @@ dependencies:
       - Pillow==7.0.0
       - ptvsd==4.3.2
       - pudb==2019.2
-      - git+git://github.com/salaniz/pycocoevalcap.git@a6b79b0fbd0f4f293634831e4e09405de2abc955
+      - git+https://github.com/salaniz/pycocoevalcap.git@a6b79b0fbd0f4f293634831e4e09405de2abc955
       - pymongo==3.10.1
       - pyzmq==19.0.0
       - gunicorn==20.0.4

@@ -85,7 +85,7 @@ model:
   index: roberta
   weigh_bert: true
   padding_value: 1
-  model_path: /data/vkhanh/transform-and-tell-sec/expt/wit/6_transformer_weighted_roberta_ner_csd_ft/serialization_csd/best.th
+  model_path: /data/vkhanh/transform-and-tell-sec/expt/wit/6_transformer_weighted_roberta/serialization_csd/best.th
   # initializer:
   #   - - ^(attention|article_attention|init|f).*weight
   #     - type: xavier_uniform
