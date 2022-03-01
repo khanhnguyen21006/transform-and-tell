@@ -1,11 +1,11 @@
 dataset_reader:
-  type: wit_desc_sec
+  type: wit_desc_sec_ner
   tokenizer:
     type: word
     word_splitter: just_spaces_keep_newlines
   token_indexers:
     roberta:
-      type: roberta_ner_cad
+      type: roberta_gns_ner # this module is multi-purpose, use to separate between context and caption, do not get confused because of the same
       model_name: roberta-base
       namespace: bpe
       padding_on_right: true
