@@ -11,7 +11,7 @@ dataset_reader:
       padding_on_right: true
       padding_value: 1
       max_len: 512
-  data_dir: /data/vkhanh/backup/5_goodnews/data
+  data_dir: /data2fast/users/vkhanh/data_goodnews/
   lazy: true
 train_data_path: TRAIN
 validation_data_path: VAL
@@ -85,7 +85,7 @@ model:
   index: roberta
   weigh_bert: true
   padding_value: 1
-  model_path: /data/vkhanh/transform-and-tell-sec/expt/wit/6_transformer_weighted_roberta_ner_csd_ft/serialization_csd/best.th
+  model_path: /data2fast/users/vkhanh/test/transform-and-tell/expt/wit/6_transformer_weighted_roberta_ner_csd_ft/serialization_csd/best.th
   # initializer:
   #   - - ^(attention|article_attention|init|f).*weight
   #     - type: xavier_uniform
