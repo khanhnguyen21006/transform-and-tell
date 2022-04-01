@@ -15,3 +15,4 @@ from .goodnews_ner import GoodNewsNERReader
 from .goodnews_raw import GoodNewsRawReader
 from .goodnews_cleaned_ner import GoodNewsCleanedNERReader
 from .wit_hard_only import WitHardOnlyReader
+from .wit_desc_sec_ner import WitDescSecNERReader
